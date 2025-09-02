@@ -55,7 +55,7 @@ export class Dashboard implements OnInit {
       this.activityService.getActivities(5).toPromise(),
       this.badgeService.getBadgeProgress().toPromise()
     ]).then(([stats, activities, badges]) => {
-      this.userStats = stats;
+      this.userStats = stats || null;
       this.recentActivities = activities || [];
       this.badgeProgress = badges || [];
       this.loading = false;
