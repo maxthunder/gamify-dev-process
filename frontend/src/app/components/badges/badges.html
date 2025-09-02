@@ -1,0 +1,147 @@
+<div class="badges-container">
+  <!-- Header -->
+  <div class="badges-header">
+    <div class="header-content">
+      <h1>
+        <mat-icon>military_tech</mat-icon>
+        Badges & Achievements
+      </h1>
+      <p class="subtitle">Track your progress and unlock new achievements</p>
+    </div>
+    <button mat-raised-button color="primary" (click)="checkForNewBadges()" [disabled]="checking || loading">
+      <mat-icon>search</mat-icon>
+      {{ checking ? 'Checking...' : 'Check for New Badges' }}
+    </button>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <p>Loading badges...</p>
+  </div>
+
+  <!-- Badges content -->
+  <div *ngIf="!loading" class="badges-content">
+    <!-- Earned vs Available Tabs -->
+    <mat-tab-group class="badges-tabs" animationDuration="0ms">
+      <!-- Earned Badges Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>emoji_events</mat-icon>
+          Earned ({{ earnedBadges.length }})
+        </ng-template>
+        
+        <div class="tab-content">
+          <div *ngIf="earnedBadges.length === 0" class="empty-state">
+            <mat-icon>info</mat-icon>
+            <h3>No badges earned yet</h3>
+            <p>Complete activities to start earning badges and show off your achievements!</p>
+          </div>
+
+          <!-- Earned badges by category -->
+          <div *ngIf="earnedBadges.length > 0">
+            <div *ngFor="let category of getCategories()" class="category-section">
+              <div *ngIf="getBadgesByCategory(earnedBadges)[category]?.length > 0">
+                <div class="category-header">
+                  <mat-chip-set>
+                    <mat-chip [style.background-color]="getCategoryColor(category)" [style.color]="'white'">
+                      <mat-icon matChipAvatar>{{ getBadgeIcon(category) }}</mat-icon>
+                      {{ getCategoryLabel(category) }}
+                    </mat-chip>
+                  </mat-chip-set>
+                </div>
+                
+                <div class="badges-grid">
+                  <mat-card *ngFor="let badge of getBadgesByCategory(earnedBadges)[category]" class="badge-card earned">
+                    <div class="badge-header">
+                      <mat-icon class="badge-icon earned" [style.color]="getCategoryColor(badge.category)">
+                        {{ getBadgeIcon(badge.category) }}
+                      </mat-icon>
+                      <div class="badge-earned-indicator">
+                        <mat-icon>check_circle</mat-icon>
+                      </div>
+                    </div>
+                    <mat-card-content>
+                      <h3>{{ badge.name }}</h3>
+                      <p class="badge-description">{{ badge.description }}</p>
+                      <div class="badge-meta">
+                        <span class="badge-points">{{ badge.points }} points</span>
+                        <span class="badge-date" *ngIf="badge.created_at">
+                          Earned {{ badge.created_at | date:'mediumDate' }}
+                        </span>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Available/In-Progress Badges Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>trending_up</mat-icon>
+          In Progress ({{ availableBadges.length }})
+        </ng-template>
+
+        <div class="tab-content">
+          <div *ngIf="availableBadges.length === 0" class="empty-state">
+            <mat-icon>info</mat-icon>
+            <h3>No badges in progress</h3>
+            <p>All available badges have been earned! Check back later for new challenges.</p>
+          </div>
+
+          <!-- Available badges by category -->
+          <div *ngIf="availableBadges.length > 0">
+            <div *ngFor="let category of getCategories()" class="category-section">
+              <div *ngIf="getBadgesByCategory(availableBadges)[category]?.length > 0">
+                <div class="category-header">
+                  <mat-chip-set>
+                    <mat-chip [style.background-color]="getCategoryColor(category)" [style.color]="'white'">
+                      <mat-icon matChipAvatar>{{ getBadgeIcon(category) }}</mat-icon>
+                      {{ getCategoryLabel(category) }}
+                    </mat-chip>
+                  </mat-chip-set>
+                </div>
+                
+                <div class="badges-grid">
+                  <mat-card *ngFor="let badge of getBadgesByCategory(availableBadges)[category]" class="badge-card available">
+                    <div class="badge-header">
+                      <mat-icon class="badge-icon available" [style.color]="getCategoryColor(badge.category)">
+                        {{ getBadgeIcon(badge.category) }}
+                      </mat-icon>
+                      <div class="progress-indicator" *ngIf="badge.current !== undefined && badge.target !== undefined">
+                        {{ getProgressPercentage(badge.current, badge.target) | number:'1.0-0' }}%
+                      </div>
+                    </div>
+                    <mat-card-content>
+                      <h3>{{ badge.name }}</h3>
+                      <p class="badge-description">{{ badge.description }}</p>
+                      <div class="badge-meta">
+                        <span class="badge-points">{{ badge.points }} points</span>
+                      </div>
+                      
+                      <!-- Progress bar -->
+                      <div *ngIf="badge.current !== undefined && badge.target !== undefined" class="progress-section">
+                        <div class="progress-info">
+                          <span>{{ badge.current }}/{{ badge.target }}</span>
+                        </div>
+                        <mat-progress-bar 
+                          mode="determinate" 
+                          [value]="getProgressPercentage(badge.current, badge.target)"
+                          color="primary">
+                        </mat-progress-bar>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

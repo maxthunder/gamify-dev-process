@@ -1,0 +1,177 @@
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .app-layout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .app-toolbar {
+      z-index: 2;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+
+      .toolbar-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        .app-title {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 1.25rem;
+          font-weight: 500;
+
+          mat-icon {
+            font-size: 1.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #ffd700;
+          }
+        }
+
+        .user-menu {
+          .user-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-transform: none;
+
+            mat-icon:first-child {
+              font-size: 1.25rem;
+              width: 1.25rem;
+              height: 1.25rem;
+            }
+
+            mat-icon:last-child {
+              font-size: 1rem;
+              width: 1rem;
+              height: 1rem;
+            }
+          }
+
+          .user-info {
+            padding: 16px;
+            background: #f5f5f5;
+            margin: -8px -8px 8px -8px;
+
+            .user-details {
+              display: flex;
+              flex-direction: column;
+
+              strong {
+                font-size: 1rem;
+                margin-bottom: 4px;
+              }
+
+              small {
+                color: #666;
+                font-size: 0.875rem;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .app-sidenav-container {
+      flex: 1;
+      margin-top: 64px; // Height of toolbar
+
+      .app-sidenav {
+        width: 240px;
+        background: white;
+        border-right: 1px solid #e0e0e0;
+
+        .navigation-list {
+          padding-top: 16px;
+
+          .nav-item {
+            margin: 0 8px 4px 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+
+            &:hover {
+              background-color: #f5f5f5;
+            }
+
+            &.active {
+              background-color: #e3f2fd;
+              color: #1976d2;
+
+              mat-icon {
+                color: #1976d2;
+              }
+            }
+
+            mat-icon {
+              color: #666;
+              font-size: 1.25rem;
+              width: 1.25rem;
+              height: 1.25rem;
+            }
+
+            div[matListItemTitle] {
+              font-size: 0.95rem;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+
+      .app-content {
+        background: #f8f9fa;
+        min-height: calc(100vh - 64px);
+      }
+    }
+  }
+
+  .auth-layout {
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .app-container .app-layout {
+    .app-sidenav-container .app-sidenav {
+      width: 200px;
+    }
+
+    .app-toolbar .toolbar-content {
+      .app-title span {
+        display: none;
+      }
+
+      .user-menu .user-button span {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .app-container .app-layout {
+    .app-sidenav-container .app-sidenav {
+      width: 100%;
+      position: fixed;
+      z-index: 3;
+    }
+
+    .app-toolbar .toolbar-content .app-title {
+      font-size: 1rem;
+    }
+  }
+}
