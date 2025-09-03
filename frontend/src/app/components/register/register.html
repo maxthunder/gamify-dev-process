@@ -1,1 +1,151 @@
-<p>register works!</p>
+<div class="register-container">
+  <div class="register-card">
+    <h2>Create Your Account</h2>
+    <p class="subtitle">Join the Dev Gamification platform and start earning badges!</p>
+    
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <div class="form-group">
+        <label for="username">Username *</label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username"
+          [(ngModel)]="formData.username"
+          required
+          minlength="3"
+          maxlength="30"
+          class="form-control"
+          placeholder="Choose a unique username"
+          #usernameInput="ngModel"
+        />
+        @if (usernameInput.invalid && usernameInput.touched) {
+          <span class="error-message">
+            @if (usernameInput.errors?.['required']) {
+              Username is required
+            }
+            @if (usernameInput.errors?.['minlength']) {
+              Username must be at least 3 characters
+            }
+          </span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email"
+          [(ngModel)]="formData.email"
+          required
+          email
+          class="form-control"
+          placeholder="Enter your email address"
+          #emailInput="ngModel"
+        />
+        @if (emailInput.invalid && emailInput.touched) {
+          <span class="error-message">
+            @if (emailInput.errors?.['required']) {
+              Email is required
+            }
+            @if (emailInput.errors?.['email']) {
+              Please enter a valid email address
+            }
+          </span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password *</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password"
+          [(ngModel)]="formData.password"
+          required
+          minlength="6"
+          class="form-control"
+          placeholder="Create a strong password"
+          #passwordInput="ngModel"
+        />
+        @if (passwordInput.invalid && passwordInput.touched) {
+          <span class="error-message">
+            @if (passwordInput.errors?.['required']) {
+              Password is required
+            }
+            @if (passwordInput.errors?.['minlength']) {
+              Password must be at least 6 characters
+            }
+          </span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password *</label>
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          name="confirmPassword"
+          [(ngModel)]="formData.confirmPassword"
+          required
+          class="form-control"
+          placeholder="Re-enter your password"
+          #confirmPasswordInput="ngModel"
+        />
+        @if (confirmPasswordInput.touched && formData.password !== formData.confirmPassword) {
+          <span class="error-message">Passwords do not match</span>
+        }
+      </div>
+
+      <div class="form-divider">
+        <span>Optional Integrations</span>
+      </div>
+
+      <div class="form-group">
+        <label for="github_username">GitHub Username</label>
+        <input 
+          type="text" 
+          id="github_username" 
+          name="github_username"
+          [(ngModel)]="formData.github_username"
+          class="form-control"
+          placeholder="Your GitHub username (optional)"
+        />
+        <small class="form-hint">Connect your GitHub to track commits and pull requests</small>
+      </div>
+
+      <div class="form-group">
+        <label for="jira_account_id">Jira Account ID</label>
+        <input 
+          type="text" 
+          id="jira_account_id" 
+          name="jira_account_id"
+          [(ngModel)]="formData.jira_account_id"
+          class="form-control"
+          placeholder="Your Jira account ID (optional)"
+        />
+        <small class="form-hint">Connect your Jira to track issues and tasks</small>
+      </div>
+
+      @if (error) {
+        <div class="alert alert-error">{{ error }}</div>
+      }
+
+      @if (success) {
+        <div class="alert alert-success">{{ success }}</div>
+      }
+
+      <button 
+        type="submit" 
+        [disabled]="loading || !registerForm.valid || formData.password !== formData.confirmPassword"
+        class="btn btn-primary"
+      >
+        {{ loading ? 'Creating Account...' : 'Create Account' }}
+      </button>
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a routerLink="/login">Login here</a>
+    </div>
+  </div>
+</div>

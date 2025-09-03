@@ -16,8 +16,8 @@ export class ActivityService {
   }
 
   getActivities(limit?: number): Observable<Activity[]> {
-    const params = limit ? { limit: limit.toString() } : {};
-    return this.http.get<Activity[]>(`${this.apiUrl}/activities`, { params });
+    const params = limit ? { limit: limit.toString() } : undefined;
+    return this.http.get<Activity[]>(`${this.apiUrl}/activities`, params ? { params } : {});
   }
 
   getUserStats(): Observable<UserStats> {

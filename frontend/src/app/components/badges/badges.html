@@ -41,7 +41,7 @@
           <!-- Earned badges by category -->
           <div *ngIf="earnedBadges.length > 0">
             <div *ngFor="let category of getCategories()" class="category-section">
-              <div *ngIf="getBadgesByCategory(earnedBadges)[category]?.length > 0">
+              <div *ngIf="getBadgesByCategory(earnedBadges)[category] && getBadgesByCategory(earnedBadges)[category].length > 0">
                 <div class="category-header">
                   <mat-chip-set>
                     <mat-chip [style.background-color]="getCategoryColor(category)" [style.color]="'white'">
@@ -52,7 +52,7 @@
                 </div>
                 
                 <div class="badges-grid">
-                  <mat-card *ngFor="let badge of getBadgesByCategory(earnedBadges)[category]" class="badge-card earned">
+                  <mat-card *ngFor="let badge of getBadgesByCategory(earnedBadges)[category] || []" class="badge-card earned">
                     <div class="badge-header">
                       <mat-icon class="badge-icon earned" [style.color]="getCategoryColor(badge.category)">
                         {{ getBadgeIcon(badge.category) }}
@@ -96,7 +96,7 @@
           <!-- Available badges by category -->
           <div *ngIf="availableBadges.length > 0">
             <div *ngFor="let category of getCategories()" class="category-section">
-              <div *ngIf="getBadgesByCategory(availableBadges)[category]?.length > 0">
+              <div *ngIf="getBadgesByCategory(availableBadges)[category] && getBadgesByCategory(availableBadges)[category].length > 0">
                 <div class="category-header">
                   <mat-chip-set>
                     <mat-chip [style.background-color]="getCategoryColor(category)" [style.color]="'white'">
